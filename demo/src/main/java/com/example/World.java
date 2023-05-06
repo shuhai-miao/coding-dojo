@@ -6,20 +6,22 @@ import java.util.List;
 
 public class World {
 
-  private static final int MAX_X = 10;
-  private static final int MAX_Y = 10;
+  private static final int MAX_ROWS = 10;
+  private static final int MAX_COLS = 10;
 
   private List<Cell> cells = new ArrayList<>();
 
   public World() {
     
-    // initialize the world with an dead cell in each position
-    for (int x = 0; x < MAX_X; x++) {
-      for (int y = 0; y < MAX_Y; y++) {
+    initializeWorld();
+  }
+
+  private void initializeWorld() {
+    for (int x = 0; x < MAX_ROWS; x++) {
+      for (int y = 0; y < MAX_COLS; y++) {
         cells.add(new Cell(x, y, false));
       }
     }
-
   }
 
   public boolean isEmpty() {
