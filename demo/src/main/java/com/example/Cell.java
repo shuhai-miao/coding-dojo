@@ -26,10 +26,6 @@ public class Cell {
     return y;
   }
 
-  public boolean isDead() {
-    return !alive;
-  }
-
   public boolean isAlive() {
     return alive;
   }

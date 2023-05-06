@@ -37,7 +37,7 @@ public class World {
         if (countLivingNeighbors(cell) >= 3) {
           cell.die();
         }
-      } else if (cell.isDead()) {
+      } else {
         if (countLivingNeighbors(cell) == 3) {
           cell.revive();
         }
@@ -57,15 +57,15 @@ public class World {
   }
 
   public long countLivingCells() {
-   return cells.stream().filter(cell -> !cell.isDead()).count();
+   return cells.stream().filter(cell -> cell.isAlive()).count();
   }
 
   public long countLivingNeighbors(Cell cell) {
     return cells.stream().filter(c -> c.isNeighborOf(cell) && c.isAlive()).count();
   }
 
-  public boolean isDead(int x, int y) {
-    return cells.stream().filter(cell -> cell.getX() == x && cell.getY() == y).findFirst().get().isDead();
+  public boolean isAlive(int x, int y) {
+    return cells.stream().filter(cell -> cell.getX() == x && cell.getY() == y).findFirst().get().isAlive();
   }
 
 }

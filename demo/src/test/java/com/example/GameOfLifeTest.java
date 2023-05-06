@@ -38,8 +38,8 @@ public class GameOfLifeTest {
     world.tick();
 
     // Then the cell comes to life
-    assert !world.isDead(2, 4);
-    assert !world.isDead(4, 4);
+    assert world.isAlive(2, 4);
+    assert world.isAlive(4, 4);
 
   }
 
@@ -63,9 +63,9 @@ public class GameOfLifeTest {
     world.tick();
 
     // Then the cell dies
-    assert cell1.isDead();
-    assert cell2.isDead();
-    assert cell3.isDead();
+    assert !cell1.isAlive();
+    assert !cell2.isAlive();
+    assert !cell3.isAlive();
 
   }
 
@@ -83,8 +83,8 @@ public class GameOfLifeTest {
     world.tick();
 
     // Then the cell dies
-    assert cell1.isDead();
-    assert cell2.isDead();
+    assert !cell1.isAlive();
+    assert !cell2.isAlive();
   }
 
   @Test
