@@ -4,6 +4,22 @@ import org.junit.jupiter.api.Test;
 
 public class GameOfLifeTest {
 
+
+  @Test
+  public void a_world_with_two_living_cells_dies_after_one_tick() {
+      
+      // Given a world with two living cells
+      World world = new World();
+      world.add(new Cell(0, 1));
+      world.add(new Cell(1, 1));
+  
+      // When I tick the world
+      world.tick();
+  
+      // Then the world is empty
+      assert world.isEmpty();
+  }
+
   @Test
   public void one_location_can_only_house_one_cell() {
 
