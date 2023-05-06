@@ -1,14 +1,12 @@
 package com.example;
 
+import java.util.Objects;
+
 public class Cell {
 
   private boolean alive;
   private int x;
   private int y;
-
-  public static Cell aliveCell() {
-    return new Cell(0, 0, true);
-  }
 
   public static Cell aliveCell(int x, int y) {
     return new Cell(x, y, true);
@@ -36,25 +34,39 @@ public class Cell {
     return alive;
   }
 
+  public void revive() {
+    alive = true;
+  }
+
   public void die() {
     alive = false;
   }
 
-	public boolean isNeighborOf(Cell cell) {
-    if (cell == null) return false;
-    if (cell.getX() == x && cell.getY() == y) return false;
-    if (cell.getX() == x && cell.getY() == y - 1) return true;
-    if (cell.getX() == x && cell.getY() == y + 1) return true;
-    if (cell.getX() == x - 1 && cell.getY() == y) return true;
-    if (cell.getX() == x + 1 && cell.getY() == y) return true;
-    if (cell.getX() == x - 1 && cell.getY() == y - 1) return true;
-    if (cell.getX() == x + 1 && cell.getY() == y + 1) return true;
-    if (cell.getX() == x - 1 && cell.getY() == y + 1) return true;
-    if (cell.getX() == x + 1 && cell.getY() == y - 1) return true;
-		return false;
-	}
+  public boolean isNeighborOf(Cell cell) {
+    if (Objects.isNull(cell) || this.equals(cell)) {
+      return false;
+    }
 
-  public void revive() {
-    alive = true;
+    int deltaX = Math.abs(this.x - cell.getX());
+    int deltaY = Math.abs(this.y - cell.getY());
+
+    return (deltaX <= 1) && (deltaY <= 1);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Cell cell = (Cell) obj;
+    return x == cell.x && y == cell.y;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y);
   }
 }
