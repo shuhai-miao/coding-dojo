@@ -8,14 +8,25 @@ public class Cell {
   private int x;
   private int y;
 
+  public static Cell of(int x, int y) {
+    return of(x, y, false);
+  }
+  
+  public static Cell of(int x, int y, boolean alive) {
+    return new Cell(x, y, alive);
+  }
   public static Cell aliveCell(int x, int y) {
-    return new Cell(x, y, true);
+    return of (x, y, true);
   }
 
-  public Cell(int x, int y, boolean alive) {
+  private Cell(int x, int y, boolean alive) {
     this.alive = alive;
     this.x = x;
     this.y = y;
+  }
+
+  public Cell(Cell other) {
+    this(other.x, other.y, other.alive);
   }
 
   public int getX() {
@@ -36,6 +47,11 @@ public class Cell {
 
   public void die() {
     alive = false;
+  }
+
+  public boolean hasSameCoordinates(Cell other) {
+    if (other == null) return false;
+    return this.x == other.x && this.y == other.y;
   }
 
   public boolean isNeighborOf(Cell cell) {

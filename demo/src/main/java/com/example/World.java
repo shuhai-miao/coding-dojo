@@ -9,7 +9,8 @@ public class World {
   private static final int MAX_COLS = 10;
 
   private List<Cell> cells;
-  private static final List<Rule> rules = List.of(new UnderPopulationRule(), new OverPopulationRule(), new ReproductionRule());
+  private static final List<Rule> rules = List.of(new UnderPopulationRule(), new OverPopulationRule(),
+      new ReproductionRule());
 
   public World() {
     this(initializeWorld());
@@ -23,7 +24,7 @@ public class World {
     List<Cell> cells = new ArrayList<>();
     for (int x = 0; x < MAX_ROWS; x++) {
       for (int y = 0; y < MAX_COLS; y++) {
-        cells.add(new Cell(x, y, false));
+        cells.add(Cell.of(x, y, false));
       }
     }
     return cells;
@@ -37,22 +38,22 @@ public class World {
     List<Cell> newCells = new ArrayList<>();
 
     for (Cell cell : cells) {
-        Cell newCell = new Cell(cell.getX(), cell.getY(), cell.isAlive());
-        rules.forEach(rule -> rule.apply(newCell, countLivingNeighbors(cell)));
-        newCells.add(newCell);
+      Cell newCell = new Cell(cell);
+      rules.forEach(rule -> rule.apply(newCell, countLivingNeighbors(cell)));
+      newCells.add(newCell);
     }
     return new World(newCells);
   }
 
   public void add(Cell cell) {
-    for (Cell existingCell : cells) {
-      if (existingCell.getX() == cell.getX() && existingCell.getY() == cell.getY()) {
-        if (existingCell.isAlive() != cell.isAlive()) {
-          existingCell.revive();
-        } 
-        break;
-      }
-    }
+    cells.stream()
+        .filter(existingCell -> existingCell.hasSameCoordinates(cell))
+        .findFirst()
+        .ifPresent(existingCell -> {
+          if (existingCell.isAlive() != cell.isAlive()) {
+            existingCell.revive();
+          }
+        });
   }
 
   public long countLivingCells() {
@@ -64,7 +65,7 @@ public class World {
   }
 
   public boolean isAlive(int x, int y) {
-    return cells.stream().filter(cell -> cell.getX() == x && cell.getY() == y).findFirst().get().isAlive();
+    return cells.stream().filter(cell -> cell.hasSameCoordinates(Cell.of(x, y, false))).findFirst().get().isAlive();
   }
 
   interface Rule {
@@ -74,7 +75,6 @@ public class World {
   static class UnderPopulationRule implements Rule {
     @Override
     public void apply(Cell cell, long livingNeighborsCount) {
-      System.out.println(cell.getX() + "," + cell.getY() + " " + livingNeighborsCount);
       if (cell.isAlive() && livingNeighborsCount < 2) {
         cell.die();
       }
