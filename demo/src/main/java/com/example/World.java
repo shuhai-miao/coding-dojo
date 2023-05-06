@@ -9,7 +9,9 @@ public class World {
   private static final int MAX_COLS = 10;
 
   private List<Cell> cells;
-  private static final List<Rule> rules = List.of(new UnderPopulationRule(), new OverPopulationRule(),
+  private static final List<Rule> rules = List.of(
+      new UnderPopulationRule(),
+      new OverPopulationRule(),
       new ReproductionRule());
 
   public World() {
@@ -38,7 +40,7 @@ public class World {
     List<Cell> newCells = new ArrayList<>();
 
     for (Cell cell : cells) {
-      Cell newCell = new Cell(cell);
+      Cell newCell = Cell.of(cell);
       rules.forEach(rule -> rule.apply(newCell, countLivingNeighbors(cell)));
       newCells.add(newCell);
     }

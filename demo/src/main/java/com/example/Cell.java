@@ -5,36 +5,31 @@ import java.util.Objects;
 public class Cell {
 
   private boolean alive;
-  private int x;
-  private int y;
+  private final Coordinate coordinate;
 
   public static Cell of(int x, int y) {
     return of(x, y, false);
   }
-  
+
   public static Cell of(int x, int y, boolean alive) {
-    return new Cell(x, y, alive);
+    return new Cell(new Coordinate(x, y), alive);
   }
+
+  public static Cell of(Cell other) {
+    return new Cell(other.getCoordinate(), other.alive);
+  }
+
   public static Cell aliveCell(int x, int y) {
-    return of (x, y, true);
+    return of(x, y, true);
   }
 
-  private Cell(int x, int y, boolean alive) {
+  private Cell(Coordinate coordinate, boolean alive) {
+    this.coordinate = coordinate;
     this.alive = alive;
-    this.x = x;
-    this.y = y;
   }
 
-  public Cell(Cell other) {
-    this(other.x, other.y, other.alive);
-  }
-
-  public int getX() {
-    return x;
-  }
-
-  public int getY() {
-    return y;
+  public Coordinate getCoordinate() {
+    return coordinate;
   }
 
   public boolean isAlive() {
@@ -50,35 +45,11 @@ public class Cell {
   }
 
   public boolean hasSameCoordinates(Cell other) {
-    if (other == null) return false;
-    return this.x == other.x && this.y == other.y;
+    return Objects.equals(this.coordinate, other.coordinate);
   }
 
   public boolean isNeighborOf(Cell cell) {
-    if (Objects.isNull(cell) || this.equals(cell)) {
-      return false;
-    }
-
-    int deltaX = Math.abs(this.x - cell.getX());
-    int deltaY = Math.abs(this.y - cell.getY());
-
-    return (deltaX <= 1) && (deltaY <= 1);
+    return Objects.isNull(cell) || coordinate.isNeighborOf(cell.coordinate);
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null || getClass() != obj.getClass()) {
-      return false;
-    }
-    Cell cell = (Cell) obj;
-    return x == cell.x && y == cell.y;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(x, y);
-  }
 }
