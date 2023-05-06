@@ -49,7 +49,7 @@ public class Cell {
   }
 
   public boolean isNeighborOf(Cell cell) {
-    return Objects.isNull(cell) || coordinate.isNeighborOf(cell.coordinate);
+    return !Objects.isNull(cell) && coordinate.isNeighborOf(cell.coordinate);
   }
 
 }
