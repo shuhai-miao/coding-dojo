@@ -6,6 +6,35 @@ public class GameOfLifeTest {
 
 
   @Test
+  public void show_world_map() {
+  
+    // Given a world with living cells
+    World world = new World();
+    world.add(Cell.aliveCell(2, 2));
+    world.add(Cell.aliveCell(2, 3));
+    world.add(Cell.aliveCell(2, 4));
+
+    // When I print the world map
+    WorldMap worldMap = WorldMap.of(world);
+    System.out.println(worldMap);
+
+    // Then I see a map of the world
+    assert worldMap.toString().equals(
+        "..........\n" +
+        "..........\n" +
+        "..*.......\n" +
+        "..*.......\n" +
+        "..*.......\n" +
+        "..........\n" +
+        "..........\n" +
+        "..........\n" +
+        "..........\n" +
+        "..........\n"
+    );
+
+  }
+
+  @Test
   public void a_world_with_three_living_cells_in_a_row_does_not_die_after_a_tick() {
 
     // Given a world with three living cells in a row
