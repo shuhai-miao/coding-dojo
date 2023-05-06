@@ -9,19 +9,25 @@ public class World {
   private static final int MAX_ROWS = 10;
   private static final int MAX_COLS = 10;
 
-  private List<Cell> cells = new ArrayList<>();
+  private List<Cell> cells;
+  private List<Rule> rules;
 
   public World() {
-    
     initializeWorld();
+    initializeRules();
   }
 
   private void initializeWorld() {
+    cells = new ArrayList<>();
     for (int x = 0; x < MAX_ROWS; x++) {
       for (int y = 0; y < MAX_COLS; y++) {
         cells.add(new Cell(x, y, false));
       }
     }
+  }
+
+  private void initializeRules() {
+    rules = List.of(new UnderPopulationRule(), new OverPopulationRule(), new ReproductionRule());
   }
 
   public boolean isEmpty() {
@@ -32,28 +38,8 @@ public class World {
     Iterator<Cell> iterator = cells.iterator();
     while (iterator.hasNext()) {
       Cell cell = iterator.next();
-        if (isUnderPopulation(cell)) {
-          cell.die();
-        }
-        if (isOverPopulation(cell)) {
-          cell.die();
-        }
-        if (isReproduction(cell)) {
-          cell.revive();
-        }
+      rules.forEach(rule -> rule.apply(cell, countLivingNeighbors(cell)));
     }
-  }
-
-  private boolean isReproduction(Cell cell) {
-    return !cell.isAlive() && countLivingNeighbors(cell) == 3;
-  }
-
-  private boolean isOverPopulation(Cell cell) {
-    return cell.isAlive() && countLivingNeighbors(cell) >= 3;
-  }
-
-  private boolean isUnderPopulation(Cell cell) {
-    return cell.isAlive() && countLivingNeighbors(cell) <= 2;
   }
 
   public void add(Cell cell) {
@@ -68,7 +54,7 @@ public class World {
   }
 
   public long countLivingCells() {
-   return cells.stream().filter(cell -> cell.isAlive()).count();
+    return cells.stream().filter(cell -> cell.isAlive()).count();
   }
 
   public long countLivingNeighbors(Cell cell) {
@@ -77,6 +63,37 @@ public class World {
 
   public boolean isAlive(int x, int y) {
     return cells.stream().filter(cell -> cell.getX() == x && cell.getY() == y).findFirst().get().isAlive();
+  }
+
+  interface Rule {
+    void apply(Cell cell, long livingNeighborsCount);
+  }
+
+  static class UnderPopulationRule implements Rule {
+    @Override
+    public void apply(Cell cell, long livingNeighborsCount) {
+      if (cell.isAlive() && livingNeighborsCount < 2) {
+        cell.die();
+      }
+    }
+  }
+
+  static class OverPopulationRule implements Rule {
+    @Override
+    public void apply(Cell cell, long livingNeighborsCount) {
+      if (cell.isAlive() && livingNeighborsCount > 3) {
+        cell.die();
+      }
+    }
+  }
+
+  static class ReproductionRule implements Rule {
+    @Override
+    public void apply(Cell cell, long livingNeighborsCount) {
+      if (!cell.isAlive() && livingNeighborsCount == 3) {
+        cell.revive();
+      }
+    }
   }
 
 }
