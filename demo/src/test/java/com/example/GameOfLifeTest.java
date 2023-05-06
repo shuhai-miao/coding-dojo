@@ -4,6 +4,33 @@ import org.junit.jupiter.api.Test;
 
 public class GameOfLifeTest {
 
+  @Test
+  public void a_world_with_three_living_cells_in_a_row_oscilates() {
+      
+      // Given a world with three living cells in a row
+      World world = new World();
+      world.add(Cell.aliveCell(2, 2));
+      world.add(Cell.aliveCell(2, 3));
+      world.add(Cell.aliveCell(2, 4));
+      System.out.println(WorldMap.of(world));
+  
+      // When I tick the world
+      World nextWorld = world.tick();
+  
+      // Then the world oscillates
+      assert nextWorld.isAlive(1, 3);
+      assert nextWorld.isAlive(2, 3);
+      assert nextWorld.isAlive(3, 3);
+      System.out.println(WorldMap.of(nextWorld));
+
+      World nextNextWorld = nextWorld.tick();
+
+      assert nextNextWorld.isAlive(2, 2);
+      assert nextNextWorld.isAlive(2, 3);
+      assert nextNextWorld.isAlive(2, 4);
+      System.out.println(WorldMap.of(nextNextWorld));
+
+  }
 
   @Test
   public void show_world_map() {
