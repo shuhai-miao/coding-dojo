@@ -6,12 +6,26 @@ public class GameOfLifeTest {
 
 
   @Test
+  public void a_world_with_a_single_living_cell_dies_after_one_tick() {
+      
+      // Given a world with a single living cell
+      World world = new World();
+      world.add(new Cell());
+  
+      // When I tick the world
+      world.tick();
+  
+      // Then the world is empty
+      assert world.isEmpty();
+  }
+
+  @Test
   public void a_living_cell_can_be_added_to_the_world() {
 
     // Given a world
     World world = new World();
 
-    // When I add a living cell to the world
+    // When I add a cell to the world
     world.add(new Cell());
 
     // Then the world is not empty
