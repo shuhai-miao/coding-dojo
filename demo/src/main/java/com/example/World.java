@@ -5,21 +5,27 @@ import java.util.List;
 
 public class World {
 
-  private static final int MAX_ROWS = 10;
-  private static final int MAX_COLS = 10;
+  private static final int GRID_SIZE = 10;
 
   private List<Cell> cells;
+  private int gridSize = GRID_SIZE;
+
   private static final List<Rule> rules = List.of(
       new UnderPopulationRule(),
       new OverPopulationRule(),
       new ReproductionRule());
 
   public World() {
-    this(initializeWorld());
+    this(initializeWorld(GRID_SIZE), GRID_SIZE);
   }
 
-  public World(List<Cell> cells) {
+  public World(int gridSize) {
+    this(initializeWorld(gridSize), gridSize);
+  }
+
+  public World(List<Cell> cells, int gridSize) {
     this.cells = cells;
+    this.gridSize = gridSize;
   }
 
   public boolean isEmpty() {
@@ -45,7 +51,7 @@ public class World {
       rules.forEach(rule -> rule.apply(newCell, countLivingNeighbors(cell)));
       newCells.add(newCell);
     }
-    return new World(newCells);
+    return new World(newCells, gridSize);
   }
 
   public long countLivingCells() {
@@ -60,10 +66,10 @@ public class World {
     return cells.stream().filter(cell -> cell.getCoordinate().equals(Coordinate.of(x, y))).findFirst().get().isAlive();
   }
 
-  private static List<Cell> initializeWorld() {
+  private static List<Cell> initializeWorld(int gridSize) {
     List<Cell> cells = new ArrayList<>();
-    for (int x = 0; x < MAX_ROWS; x++) {
-      for (int y = 0; y < MAX_COLS; y++) {
+    for (int x = 0; x < gridSize; x++) {
+      for (int y = 0; y < gridSize; y++) {
         cells.add(Cell.of(x, y, false));
       }
     }
