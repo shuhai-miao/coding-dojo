@@ -1,7 +1,6 @@
 package com.example;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class World {
@@ -10,47 +9,50 @@ public class World {
   private static final int MAX_COLS = 10;
 
   private List<Cell> cells;
-  private List<Rule> rules;
+  private static final List<Rule> rules = List.of(new UnderPopulationRule(), new OverPopulationRule(), new ReproductionRule());
 
   public World() {
-    initializeWorld();
-    initializeRules();
+    this(initializeWorld());
   }
 
-  private void initializeWorld() {
-    cells = new ArrayList<>();
+  public World(List<Cell> cells) {
+    this.cells = cells;
+  }
+
+  private static List<Cell> initializeWorld() {
+    List<Cell> cells = new ArrayList<>();
     for (int x = 0; x < MAX_ROWS; x++) {
       for (int y = 0; y < MAX_COLS; y++) {
         cells.add(new Cell(x, y, false));
       }
     }
-  }
-
-  private void initializeRules() {
-    rules = List.of(new UnderPopulationRule(), new OverPopulationRule(), new ReproductionRule());
+    return cells;
   }
 
   public boolean isEmpty() {
     return countLivingCells() == 0;
   }
 
-  public void tick() {
-    Iterator<Cell> iterator = cells.iterator();
-    while (iterator.hasNext()) {
-      Cell cell = iterator.next();
-      rules.forEach(rule -> rule.apply(cell, countLivingNeighbors(cell)));
+  public World tick() {
+    List<Cell> newCells = new ArrayList<>();
+
+    for (Cell cell : cells) {
+        Cell newCell = new Cell(cell.getX(), cell.getY(), cell.isAlive());
+        rules.forEach(rule -> rule.apply(newCell, countLivingNeighbors(cell)));
+        newCells.add(newCell);
     }
+    return new World(newCells);
   }
 
   public void add(Cell cell) {
-    Iterator<Cell> iterator = cells.iterator();
-    while (iterator.hasNext()) {
-      Cell existingCell = iterator.next();
+    for (Cell existingCell : cells) {
       if (existingCell.getX() == cell.getX() && existingCell.getY() == cell.getY()) {
-        iterator.remove();
+        if (existingCell.isAlive() != cell.isAlive()) {
+          existingCell.revive();
+        } 
+        break;
       }
     }
-    this.cells.add(cell);
   }
 
   public long countLivingCells() {
@@ -72,6 +74,7 @@ public class World {
   static class UnderPopulationRule implements Rule {
     @Override
     public void apply(Cell cell, long livingNeighborsCount) {
+      System.out.println(cell.getX() + "," + cell.getY() + " " + livingNeighborsCount);
       if (cell.isAlive() && livingNeighborsCount < 2) {
         cell.die();
       }

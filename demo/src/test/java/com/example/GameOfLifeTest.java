@@ -15,10 +15,10 @@ public class GameOfLifeTest {
     world.add(Cell.aliveCell(2, 1));
 
     // When I tick the world
-    world.tick();
+    World newWorld = world.tick();
 
     // Then the world is not empty
-    assert !world.isEmpty();
+    assert !newWorld.isEmpty();
 
   }
 
@@ -35,22 +35,22 @@ public class GameOfLifeTest {
     world.add(cell3);
 
     // When I tick the world
-    world.tick();
+    World newWorld = world.tick();
 
     // Then the cell comes to life
-    assert world.isAlive(2, 4);
-    assert world.isAlive(4, 4);
+    assert newWorld.isAlive(2, 4);
+    assert newWorld.isAlive(4, 4);
 
   }
 
   @Test
-  public void a_living_cell_with_two_living_neighbors_dies() {
+  public void a_living_cell_with_less_than_two_living_neighbors_dies() {
 
     // Given a world with a living cell with two living neighbors
     World world = new World();
-    Cell cell1 = Cell.aliveCell(0, 0);
-    Cell cell2 = Cell.aliveCell(0, 1);
-    Cell cell3 = Cell.aliveCell(0, 2);
+    Cell cell1 = Cell.aliveCell(3, 3);
+    Cell cell2 = Cell.aliveCell(3, 4);
+    Cell cell3 = Cell.aliveCell(3, 5);
     world.add(cell1);
     world.add(cell2);
     world.add(cell3);
@@ -60,12 +60,12 @@ public class GameOfLifeTest {
     assert world.countLivingNeighbors(cell3) == 1;
 
     // When I tick the world
-    world.tick();
+    World newWorld = world.tick();
 
     // Then the cell dies
-    assert !cell1.isAlive();
-    assert !cell2.isAlive();
-    assert !cell3.isAlive();
+    assert !newWorld.isAlive(3, 3);
+    assert newWorld.isAlive(3, 4);
+    assert !newWorld.isAlive(3, 5);
 
   }
 
@@ -80,11 +80,11 @@ public class GameOfLifeTest {
     world.add(cell2);
 
     // When I tick the world
-    world.tick();
+    World newWorld = world.tick();
 
     // Then the cell dies
-    assert !cell1.isAlive();
-    assert !cell2.isAlive();
+    assert !newWorld.isAlive(0, 0);
+    assert !newWorld.isAlive(0, 1);
   }
 
   @Test
@@ -115,10 +115,10 @@ public class GameOfLifeTest {
       world.add(Cell.aliveCell(1, 1));
   
       // When I tick the world
-      world.tick();
+      World newWorld = world.tick();
   
       // Then the world is empty
-      assert world.isEmpty();
+      assert newWorld.isEmpty();
   }
 
   @Test
@@ -163,10 +163,10 @@ public class GameOfLifeTest {
       world.add(Cell.aliveCell(0, 0));
   
       // When I tick the world
-      world.tick();
+      World newWorld = world.tick();
   
       // Then the world is empty
-      assert world.isEmpty();
+      assert newWorld.isEmpty();
   }
 
   @Test
@@ -189,10 +189,10 @@ public class GameOfLifeTest {
     World world = new World();
 
     // When I tick the world
-    world.tick();
+    World newWorld = world.tick();
 
     // Then it should still be empty
-    assert world.isEmpty();
+    assert newWorld.isEmpty();
   }
 
   @Test
