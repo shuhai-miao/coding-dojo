@@ -22,29 +22,8 @@ public class World {
     this.cells = cells;
   }
 
-  private static List<Cell> initializeWorld() {
-    List<Cell> cells = new ArrayList<>();
-    for (int x = 0; x < MAX_ROWS; x++) {
-      for (int y = 0; y < MAX_COLS; y++) {
-        cells.add(Cell.of(x, y, false));
-      }
-    }
-    return cells;
-  }
-
   public boolean isEmpty() {
     return countLivingCells() == 0;
-  }
-
-  public World tick() {
-    List<Cell> newCells = new ArrayList<>();
-
-    for (Cell cell : cells) {
-      Cell newCell = Cell.of(cell);
-      rules.forEach(rule -> rule.apply(newCell, countLivingNeighbors(cell)));
-      newCells.add(newCell);
-    }
-    return new World(newCells);
   }
 
   public void add(Cell cell) {
@@ -58,6 +37,17 @@ public class World {
         });
   }
 
+  public World tick() {
+    List<Cell> newCells = new ArrayList<>();
+
+    for (Cell cell : cells) {
+      Cell newCell = Cell.of(cell);
+      rules.forEach(rule -> rule.apply(newCell, countLivingNeighbors(cell)));
+      newCells.add(newCell);
+    }
+    return new World(newCells);
+  }
+
   public long countLivingCells() {
     return cells.stream().filter(cell -> cell.isAlive()).count();
   }
@@ -67,8 +57,19 @@ public class World {
   }
 
   public boolean isAlive(int x, int y) {
-    return cells.stream().filter(cell -> cell.hasSameCoordinates(Cell.of(x, y, false))).findFirst().get().isAlive();
+    return cells.stream().filter(cell -> cell.getCoordinate().equals(Coordinate.of(x, y))).findFirst().get().isAlive();
   }
+
+  private static List<Cell> initializeWorld() {
+    List<Cell> cells = new ArrayList<>();
+    for (int x = 0; x < MAX_ROWS; x++) {
+      for (int y = 0; y < MAX_COLS; y++) {
+        cells.add(Cell.of(x, y, false));
+      }
+    }
+    return cells;
+  }
+
 
   interface Rule {
     void apply(Cell cell, long livingNeighborsCount);

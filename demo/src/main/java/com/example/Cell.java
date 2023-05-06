@@ -12,7 +12,7 @@ public class Cell {
   }
 
   public static Cell of(int x, int y, boolean alive) {
-    return new Cell(new Coordinate(x, y), alive);
+    return new Cell(Coordinate.of(x, y), alive);
   }
 
   public static Cell of(Cell other) {
