@@ -4,6 +4,22 @@ import org.junit.jupiter.api.Test;
 
 public class GameOfLifeTest {
 
+  @Test
+  public void one_location_can_only_house_one_cell() {
+
+    // Given a world
+    World world = new World();
+
+    // When I add a cell to the world
+    world.add(new Cell());
+
+    // And I add another cell to the same location
+    world.add(new Cell());
+
+    // Then the world is not empty
+    assert !world.isEmpty();
+    assert world.countLivingCells() == 1;
+  }
 
   @Test
   public void more_than_one_living_cells_can_be_added_to_the_world() {
@@ -12,13 +28,14 @@ public class GameOfLifeTest {
     World world = new World();
 
     // When I add a cell to the world
-    world.add(new Cell());
+    world.add(new Cell(0, 1));
 
     // And I add another cell to the world
-    world.add(new Cell());
+    world.add(new Cell(1, 1));
 
     // Then the world is not empty
     assert !world.isEmpty();
+    assert world.countLivingCells() == 2;
   }
 
   @Test
