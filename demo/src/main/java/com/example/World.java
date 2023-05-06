@@ -32,19 +32,28 @@ public class World {
     Iterator<Cell> iterator = cells.iterator();
     while (iterator.hasNext()) {
       Cell cell = iterator.next();
-      if (cell.isAlive()) {
-        if (countLivingNeighbors(cell) <= 2) {
+        if (isUnderPopulation(cell)) {
           cell.die();
         }
-        if (countLivingNeighbors(cell) >= 3) {
+        if (isOverPopulation(cell)) {
           cell.die();
         }
-      } else {
-        if (countLivingNeighbors(cell) == 3) {
+        if (isReproduction(cell)) {
           cell.revive();
         }
-      }
     }
+  }
+
+  private boolean isReproduction(Cell cell) {
+    return !cell.isAlive() && countLivingNeighbors(cell) == 3;
+  }
+
+  private boolean isOverPopulation(Cell cell) {
+    return cell.isAlive() && countLivingNeighbors(cell) >= 3;
+  }
+
+  private boolean isUnderPopulation(Cell cell) {
+    return cell.isAlive() && countLivingNeighbors(cell) <= 2;
   }
 
   public void add(Cell cell) {
