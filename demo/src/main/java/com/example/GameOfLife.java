@@ -4,20 +4,20 @@ public class GameOfLife {
   
   public static void main(String[] args) {
   
-    World world = new World(10);
+    World world = World.of(5);
     world.add(Cell.aliveCell(2, 2));
     world.add(Cell.aliveCell(2, 3));
     world.add(Cell.aliveCell(2, 4));
 
-    WorldMap worldMap = WorldMap.of(world);
-    System.out.println(worldMap);
-
+    System.out.println("New World");
+    System.out.println(WorldMap.of(world));
+    
     World nextWorld = world.tick();
-    WorldMap nextWorldMap = WorldMap.of(nextWorld);
-    System.out.println(nextWorldMap);
+    System.out.println("Next World");
+    System.out.println(WorldMap.of(nextWorld));
 
+    System.out.println("Next Next World");
     World nextNextWorld = nextWorld.tick();
-    WorldMap nextNextWorldMap = WorldMap.of(nextNextWorld);
-    System.out.println(nextNextWorldMap);
+    System.out.println(WorldMap.of(nextNextWorld));
   }
 }

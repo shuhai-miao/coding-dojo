@@ -8,19 +8,17 @@ public class World {
   private static final int GRID_SIZE = 10;
 
   private List<Cell> cells;
-  private int gridSize = GRID_SIZE;
+  private int gridSize;
 
-  private static final List<Rule> rules = List.of(
-      new UnderPopulationRule(),
-      new OverPopulationRule(),
-      new ReproductionRule());
+  private static final List<Rule> rules = List.of(new UnderPopulationRule(),
+      new OverPopulationRule(), new ReproductionRule());
 
-  public World() {
-    this(initializeWorld(GRID_SIZE), GRID_SIZE);
+  public static World of() {
+    return of(GRID_SIZE);
   }
 
-  public World(int gridSize) {
-    this(initializeWorld(gridSize), gridSize);
+  public static World of(int gridSize) {
+    return new World(initializeWorld(gridSize), gridSize);
   }
 
   public World(List<Cell> cells, int gridSize) {
@@ -63,19 +61,26 @@ public class World {
   }
 
   public boolean isAlive(int x, int y) {
-    return cells.stream().filter(cell -> cell.getCoordinate().equals(Coordinate.of(x, y))).findFirst().get().isAlive();
+    return cells.stream()
+        .filter(cell -> cell.getCoordinate().equals(Coordinate.of(x, y)))
+        .findFirst()
+        .orElse(Cell.of(x, y))
+        .isAlive();
+  }
+
+  public int getGridSize() {
+    return gridSize;
   }
 
   private static List<Cell> initializeWorld(int gridSize) {
     List<Cell> cells = new ArrayList<>();
     for (int x = 0; x < gridSize; x++) {
       for (int y = 0; y < gridSize; y++) {
-        cells.add(Cell.of(x, y, false));
+        cells.add(Cell.of(x, y));
       }
     }
     return cells;
   }
-
 
   interface Rule {
     void apply(Cell cell, long livingNeighborsCount);

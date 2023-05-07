@@ -8,11 +8,7 @@ public class Cell {
   private final Coordinate coordinate;
 
   public static Cell of(int x, int y) {
-    return of(x, y, false);
-  }
-
-  public static Cell of(int x, int y, boolean alive) {
-    return new Cell(Coordinate.of(x, y), alive);
+    return new Cell(Coordinate.of(x, y), false);
   }
 
   public static Cell of(Cell other) {
@@ -20,7 +16,7 @@ public class Cell {
   }
 
   public static Cell aliveCell(int x, int y) {
-    return of(x, y, true);
+    return new Cell(Coordinate.of(x, y), true);
   }
 
   private Cell(Coordinate coordinate, boolean alive) {

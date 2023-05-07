@@ -17,7 +17,7 @@ public class WorldMap {
 
   @Override
   public String toString() {
-    return IntStream.range(0, 10)
+    return IntStream.range(0, world.getGridSize())
         .mapToObj(y -> IntStream.range(0, 10)
             .mapToObj(x -> world.isAlive(x, y) ? "*" : ".")
             .collect(Collectors.joining()))
