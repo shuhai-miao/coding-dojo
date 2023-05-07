@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class World {
 
@@ -42,13 +43,11 @@ public class World {
   }
 
   public World tick() {
-    List<Cell> newCells = new ArrayList<>();
-
-    for (Cell cell : cells) {
+    List<Cell> newCells = cells.stream().map(cell -> {
       Cell newCell = Cell.of(cell);
       rules.forEach(rule -> rule.apply(newCell, countLivingNeighbors(cell)));
-      newCells.add(newCell);
-    }
+      return newCell;
+    }).collect(Collectors.toList());
     return new World(newCells, gridSize);
   }
 
