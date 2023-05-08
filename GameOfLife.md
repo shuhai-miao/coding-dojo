@@ -40,7 +40,7 @@ We tend to think of duplication at a code level. In addition to look for code du
 
 An important thing to realize about these rules is that they iterate over each other. Frequently, fixing a naming issue will uncover some duplication. Eliminating that duplication will then reveal some expressiveness that can be improved.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5a5deefb-4a00-4488-acbf-17d9d35fd94e/Untitled.png)
+https://d33wubrfki0l68.cloudfront.net/0f6d2341d67720f972cba8352b22fc9566dfedfe/6a201/images/age_old_battle/virtuous_cycle.png
 
 # Conway’s Game Of Life
 
