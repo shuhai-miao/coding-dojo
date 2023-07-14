@@ -1,4 +1,8 @@
-package com.example;
+package com.example.gameoflife;
+
+import com.example.gameoflife.Cell;
+import com.example.gameoflife.World;
+import com.example.gameoflife.WorldMap;
 
 import org.junit.jupiter.api.Test;
 

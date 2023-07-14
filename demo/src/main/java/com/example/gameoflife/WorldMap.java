@@ -1,4 +1,4 @@
-package com.example;
+package com.example.gameoflife;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
