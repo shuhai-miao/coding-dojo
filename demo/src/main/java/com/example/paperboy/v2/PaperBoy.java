@@ -45,6 +45,7 @@ public class PaperBoy {
         return !papers.isEmpty();
     }
 
+    // delegate to wallet
     private Optional<Paper> makeTransfer(MonetaryAmount money) {
         wallet.setMoney(money.add(wallet.getMoney()));
         return Optional.of(papers.pop());
