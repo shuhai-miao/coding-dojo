@@ -39,30 +39,18 @@ public class ZigZagConversion {
     return result;
   }
 
-  public String padding(String s, int numRows) {
+  public String split(String s, int numRows) {
 
-    int arr[] = new int[] { numRows, numRows - 2 };
-
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < s.length(); i++) {
-      sb.append(s.charAt(i));
-      if (i % numRows == 0) {
-        sb.append(" ");
-      }
-    }
-    return sb.toString();
-  }
-
-  public String[] split(String s, int numRows) {
+    if (numRows == 1)
+      return s;
 
     int cycleLength = 2 * numRows - 2;
-    int total = (s.length() / cycleLength) * (numRows - 1);
+    int fullCycles = s.length() / cycleLength;
     int remainder = s.length() % cycleLength;
+
+    int total = fullCycles * (numRows - 1);
     if (remainder > 0) {
-      total++;
-    }
-    if (remainder > numRows) {
-      total++;
+      total += remainder / numRows + remainder % numRows;
     }
 
     char[][] result = new char[total][numRows];
@@ -81,30 +69,28 @@ public class ZigZagConversion {
       }
       index++;
     }
-    
-    String[] r = new String[total];
+
+    StringBuilder sb = new StringBuilder();
     for (int j = 0; j < result[0].length; j++) {
-      StringBuilder sb = new StringBuilder();
       for (i = 0; i < result.length; i++) {
+        if (j >= result[i].length) {
+          continue;
+        }
         if (result[i][j] != 0)
           sb.append(result[i][j]);
-        else {
-          sb.append(" ");
-        }
       }
-      r[j] = sb.toString();
     }
 
-    return r;
+    return sb.toString();
   }
 
   public String[] changeDirection(String[] s) {
-      
-      String[] result = new String[s.length];
-      for (int i = 0; i < s.length; i++) {
-        result[i] = s[i].substring(i, i + 1);
-      }
-      return result;
+
+    String[] result = new String[s.length];
+    for (int i = 0; i < s.length; i++) {
+      result[i] = s[i].substring(i, i + 1);
+    }
+    return result;
   }
 
   public char[] transpose(String s) {
@@ -113,6 +99,6 @@ public class ZigZagConversion {
       result[i] = s.charAt(i);
     }
     return result;
-    
+
   }
 }
