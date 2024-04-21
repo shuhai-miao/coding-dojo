@@ -4,43 +4,6 @@ public class ZigZagConversion {
 
   public String zigzag(String s, int numRows) {
 
-    if (s == null || s.length() == 0) {
-      return "";
-    }
-
-    if (numRows == 1) {
-      return s;
-    }
-
-    StringBuilder sb = new StringBuilder();
-
-    int index = 0;
-
-    while (index < s.length()) {
-      sb.append(s.substring(index, index + numRows));
-      for (int i = numRows - 2; i > 0; i--) {
-        sb.append(s.charAt(index + numRows + i));
-      }
-
-      index = index + numRows;
-    }
-
-    return "";
-  }
-
-  public String[] changeDirection(String s) {
-
-    String[] result = new String[s.length()];
-    int index = 0;
-    for (int i = 0; i < s.length(); i++) {
-      result[index] = s.substring(i, i + 1);
-      index++;
-    }
-    return result;
-  }
-
-  public String split(String s, int numRows) {
-
     if (numRows == 1)
       return s;
 
@@ -84,21 +47,4 @@ public class ZigZagConversion {
     return sb.toString();
   }
 
-  public String[] changeDirection(String[] s) {
-
-    String[] result = new String[s.length];
-    for (int i = 0; i < s.length; i++) {
-      result[i] = s[i].substring(i, i + 1);
-    }
-    return result;
-  }
-
-  public char[] transpose(String s) {
-    char[] result = new char[s.length()];
-    for (int i = 0; i < s.length(); i++) {
-      result[i] = s.charAt(i);
-    }
-    return result;
-
-  }
 }
