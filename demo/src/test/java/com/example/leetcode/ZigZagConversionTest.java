@@ -32,11 +32,6 @@ public class ZigZagConversionTest {
     for (int i = 0; i < result.length; i++) {
       System.out.println(result[i]);
     }
-    // String[] pivoted = zigZagConversion.changeDirection(result);
-    // for (int i = 0; i < pivoted.length; i++) {
-    //   System.out.println("result " + i + " : " + pivoted[i]);
-    // }
-    // assert result.equals("abc d ef");
  }
 
  @Test

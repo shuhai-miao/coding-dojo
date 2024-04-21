@@ -65,17 +65,15 @@ public class ZigZagConversion {
       total++;
     }
 
-    String[] result = new String[total];
+    char[][] result = new char[total][numRows];
     int index = 0;
     int i = 0;
     while (i < s.length()) {
       if (index % (numRows - 1) == 0) {
-        System.out.println("-");
-        result[index] = s.substring(i, Math.min(s.length(), i + numRows));
+        result[index] = s.substring(i, Math.min(s.length(), i + numRows)).toCharArray();
         i = i + numRows;
       } else {
-        System.out.println(">>>" + index % (numRows - 1));
-        result[index] = "*".repeat(numRows - index % (numRows - 1) - 1) + s.substring(i, Math.min(s.length(), i + 1)) + "*";
+        result[index][numRows - index % (numRows - 1) - 1] = s.charAt(i);
         i++;
       }
       if (i > s.length()) {
@@ -83,14 +81,21 @@ public class ZigZagConversion {
       }
       index++;
     }
+    
+    String[] r = new String[total];
+    for (int j = 0; j < result[0].length; j++) {
+      StringBuilder sb = new StringBuilder();
+      for (i = 0; i < result.length; i++) {
+        if (result[i][j] != 0)
+          sb.append(result[i][j]);
+        else {
+          sb.append(" ");
+        }
+      }
+      r[j] = sb.toString();
+    }
 
-    // for (int j = 0; j < result[0].length(); j++) {
-    //     for (i = 0; i < result.length; i++) {
-    //     System.out.print(result[i].charAt(j));
-    //   }
-    //   System.out.println("");
-    // }
-    return result;
+    return r;
   }
 
   public String[] changeDirection(String[] s) {
