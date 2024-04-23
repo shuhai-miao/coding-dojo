@@ -30,4 +30,15 @@ public class PalindromeTest {
     assert palindrome.longestPalindromeRecursive("a").equals("a");
     assert palindrome.longestPalindromeRecursive("ac").equals("a");
   }
+
+  @Test
+  public void isPalindromeTest() {
+    Palindrome palindrome = new Palindrome();
+    assert palindrome.isPalindrome(1002001) == true;
+    assert palindrome.isPalindrome(100001) == true;
+    assert palindrome.isPalindrome(9) == true;
+    assert palindrome.isPalindrome(10) == false;
+    assert palindrome.isPalindrome(-1) == false;
+
+  }
 }

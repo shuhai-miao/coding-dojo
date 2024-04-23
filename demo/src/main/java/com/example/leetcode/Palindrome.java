@@ -28,7 +28,6 @@ public class Palindrome {
 		return s.substring(0, 1);
 	}
 
-
 	public String longestPalindromeRecursive(String s) {
 		if (s.length() <= 1) {
 			return s;
@@ -59,5 +58,17 @@ public class Palindrome {
 		return true;
 	}
 
+	public boolean isPalindrome(int x) {
+
+		if (x < 0)
+			return false;
+		char[] result = String.valueOf(x).toCharArray();
+		int i = 0;
+		do {
+			if (result[i] != result[result.length - i - 1])
+				return false;
+		} while (i++ < result.length / 2);
+		return true;
+	}
 
 }
